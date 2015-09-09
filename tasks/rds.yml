@@ -1,0 +1,33 @@
+---
+
+## For more info check http://docs.ansible.com/ansible/rds_module.html
+- name: rds | Provision a set of instances
+  rds:
+     security_groups: "{{ aws_rds_security_group | default(omit) }}"
+     vpc_security_groups: "{{ aws_rds_security_group_id | default(omit) }}"
+     instance_type: "{{ aws_rds_instance_type }}"
+     db_engine: "{{ aws_rds_db_engine }}"
+     region: "{{ aws_rds_region }}"
+     multi_zone: "{{ aws_rds_multi_zone | default(omit) }}"
+     wait: "{{ aws_rds_wait | default(omit) }}"
+     tags: "{{ aws_rds_instance_tags | default(omit) }}"
+     publicly_accessible: "{{ aws_rds_publicly_accessible | default(omit) }}"
+     db_name: "{{ aws_rds_db_name | default(omit) }}"
+     subnet: "{{ aws_rds_vpc_subnet | default(omit) }}"
+     zone: "{{ aws_rds_zone | default(omit) }}"
+     command: "{{ aws_rds_command | default('create') }}"
+     size: "{{ aws_rds_size | default(omit) }}"
+     instance_name: "{{ aws_rds_instance_name | default(omit) }}"
+     new_instance_name: "{{ aws_rds_new_instance_name | default(omit) }}"
+     password: "{{ aws_rds_password | default(omit) }}"
+     username: "{{ aws_rds_username | default(omit) }}"
+     aws_rds_access_key: "{{ aws_rds_access_key | default(omit) }}"
+     aws_rds_secret_key: "{{ aws_rds_secret_key | default(omit) }}"
+     engine_version: "{{ aws_rds_engine_version | default(omit) }}"
+     backup_retention: "{{ aws_rds_backup_retention | default(omit) }}"
+     backup_window: "{{ aws_rds_backup_window | default(omit) }}"
+     source_instance: "{{ aws_rds_source_instance | default(omit) }}"
+     port: "{{ aws_rds_port | default(omit) }}"
+     iops: "{{ aws_rds_iops| default(omit) }}"
+     character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
+  register: rds_server

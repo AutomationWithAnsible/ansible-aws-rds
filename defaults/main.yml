@@ -1,0 +1,36 @@
+---
+## AWS access key. If not set then the value of the
+## AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY or EC2_ACCESS_KEY environment variable is used.
+#aws_ec2access_key        : "blaaablaaa"
+
+## AWS secret key. If not set then the value of the
+## AWS_SECRET_ACCESS_KEY, AWS_SECRET_KEY, or EC2_SECRET_KEY  environment variable is used.
+#aws_ec2_secret_key        : "moreblabla"
+
+# [ eu-central-1": Frankfurt, "eu-west-1": "Ireland", "us-west-2": "Oregon", "us-east-1":N. Virigina, "ap-southeast-1": Singapour]
+aws_rds_region                  : "{{ aws_region | default('eu-west-1') }}"
+
+aws_rds_instance_name           :  "{{ inventory_hostname }}"
+
+## Name to rename an instance to. Used only when command=modify
+#aws_rds_new_instance_name       : "{{ inventory_hostname }}_new"
+
+
+aws_rds_db_name                 : "{{ aws_rds_instance_name }}_db1"
+
+## The type of database.  ["MySQL", "postgres" ]
+aws_rds_db_engine               : "postgres"
+aws_rds_size                    : "5"
+aws_rds_username                : "rds_user_name"
+aws_rds_password                : "Ab2X923d24"
+
+## Version number of the database engine to use. Used only
+#aws_rds_engine_version          : "9.4.4"
+
+## The instance type of the database. 
+aws_rds_instance_type            : "db.t2.micro"
+
+
+
+
+#aws_rds_vpc_subnet
