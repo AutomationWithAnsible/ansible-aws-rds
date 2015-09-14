@@ -3,7 +3,6 @@
 ## For more info check http://docs.ansible.com/ansible/rds_module.html
 - name: rds | Provision a set of instances
   rds:
-     security_groups: "{{ aws_rds_security_group | default(omit) }}"
      vpc_security_groups: "{{ aws_rds_security_group_id | default(omit) }}"
      instance_type: "{{ aws_rds_instance_type }}"
      db_engine: "{{ aws_rds_db_engine }}"
@@ -28,6 +27,6 @@
      backup_window: "{{ aws_rds_backup_window | default(omit) }}"
      source_instance: "{{ aws_rds_source_instance | default(omit) }}"
      port: "{{ aws_rds_port | default(omit) }}"
-     iops: "{{ aws_rds_iops| default(omit) }}"
+     iops: "{{ aws_rds_iops | default(omit) }}"
      character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
   register: rds_server

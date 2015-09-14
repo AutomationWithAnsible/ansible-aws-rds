@@ -10,7 +10,7 @@
 # [ eu-central-1": Frankfurt, "eu-west-1": "Ireland", "us-west-2": "Oregon", "us-east-1":N. Virigina, "ap-southeast-1": Singapour]
 aws_rds_region                  : "{{ aws_region | default('eu-west-1') }}"
 
-aws_rds_instance_name           :  "{{ inventory_hostname }}"
+aws_rds_instance_name           :  "{{ inventory_hostname.split('0')[0]}}"
 
 ## Name to rename an instance to. Used only when command=modify
 #aws_rds_new_instance_name       : "{{ inventory_hostname }}_new"
@@ -31,6 +31,7 @@ aws_rds_password                : "Ab2X923d24"
 aws_rds_instance_type            : "db.t2.micro"
 
 
+aws_rds_wait                     : "true"
 
 
 #aws_rds_vpc_subnet
