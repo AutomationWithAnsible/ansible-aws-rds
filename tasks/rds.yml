@@ -9,6 +9,7 @@
      region: "{{ aws_rds_region }}"
      multi_zone: "{{ aws_rds_multi_zone | default(omit) }}"
      wait: "{{ aws_rds_wait | default(omit) }}"
+     wait_timeout: "{{ aws_rds_wait_timeout | default(omit) }}"
      tags: "{{ aws_rds_instance_tags | default(omit) }}"
      publicly_accessible: "{{ aws_rds_publicly_accessible | default(omit) }}"
      db_name: "{{ aws_rds_db_name | default(omit) }}"
