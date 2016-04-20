@@ -31,3 +31,33 @@
      iops: "{{ aws_rds_iops | default(omit) }}"
      character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
   register: rds_server
+  when: aws_rds_command != 'replicate'
+
+
+# Ugly hack. We MUST ONLY provide the options listed below when using 'replicate' command:
+
+- name: rds | Provision a set of instances
+  rds:
+     instance_type: "{{ aws_rds_instance_type }}"
+     # Even when the Ansible description [1] for the 'db_engine' option states:
+     #   "The type of database. Used only when command=create."
+     # The ansible-playbook fails with following error when *not* providing the 'db_engine' option:
+     #   TypeError: argument of type 'NoneType' is not iterable
+     # [1] http://docs.ansible.com/ansible/rds_module.html#options
+     db_engine: "{{ aws_rds_db_engine }}"
+     region: "{{ aws_rds_region }}"
+     wait: "{{ aws_rds_wait | default(omit) }}"
+     wait_timeout: "{{ aws_rds_wait_timeout | default(omit) }}"
+     tags: "{{ aws_rds_instance_tags | default(omit) }}"
+     publicly_accessible: "{{ aws_rds_publicly_accessible | default(omit) }}"
+     zone: "{{ aws_rds_zone | default(omit) }}"
+     command: "{{ aws_rds_command | default('create') }}"
+     instance_name: "{{ aws_rds_instance_name | default(omit) }}"
+     new_instance_name: "{{ aws_rds_new_instance_name | default(omit) }}"
+     aws_rds_access_key: "{{ aws_rds_access_key | default(omit) }}"
+     aws_rds_secret_key: "{{ aws_rds_secret_key | default(omit) }}"
+     source_instance: "{{ aws_rds_source_instance | default(omit) }}"
+     port: "{{ aws_rds_port | default(omit) }}"
+     character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
+  register: rds_server
+  when: aws_rds_command == 'replicate'
