@@ -34,4 +34,10 @@ aws_rds_instance_type            : "db.t2.micro"
 aws_rds_wait                     : "true"
 
 
+aws_rds_command                  : "create"
+
+
+# High wait timeout because RDS takes it's time.
+aws_rds_wait_timeout             : 900
+
 #aws_rds_vpc_subnet

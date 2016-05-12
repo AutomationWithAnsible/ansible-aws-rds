@@ -30,7 +30,7 @@
      port: "{{ aws_rds_port | default(omit) }}"
      iops: "{{ aws_rds_iops | default(omit) }}"
      character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
-  register: rds_server
+  register: rds_server_others
   when: aws_rds_command != 'replicate'
 
 
@@ -61,3 +61,9 @@
      character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
   register: rds_server
   when: aws_rds_command == 'replicate'
+
+- name: Set fact if command is not replicate
+  set_fact:
+     #  Overwrite rds_server variable with actual run result for later usage by other roles (e.g. aws-route53).
+     rds_server={{rds_server_others}}
+  when: aws_rds_command != 'replicate'
