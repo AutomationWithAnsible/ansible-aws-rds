@@ -15,12 +15,12 @@ aws_rds_async_retries           : 100
 
 aws_rds                         :
         instance_name           :  "{{ inventory_hostname.split('0')[0]}}"
-        db_name                 : "{{ xxx_db1"
+        db_name                 : "xxx_db1"
         db_engine               : "postgres"
         size                    : "5"
         username                : "rds_user_name"
         password                : "Ab2X923d24"
-        instance_type            : "db.t2.micro" ## The instance type of the database. 
+        instance_type            : "db.t2.micro" 
         wait                     : "true"
         command                  : "create"
-        wait_timeout             : 900 # High wait timeout because RDS takes it's time.
+        wait_timeout             : 900 
