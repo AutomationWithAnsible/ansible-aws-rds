@@ -1,0 +1,26 @@
+---
+- name: Provision an ES Service domain for Ansible logging output
+  hosts: all
+  connection: local
+  gather_facts: False
+
+## For full and default variables
+## See roles/external/ansible-aws-rds/defaults/main.yml
+  vars:
+    aws_rds                 :
+      - security_group_id   : "sg-3a27b45f"
+        publicly_accessible : False
+        db_engine           : "postgres"
+        db_name             : "testdb"
+        instance_name       : "testremoveme"
+        engine_version      : "9.4.5"
+        size                : "20"
+        instance_type       : "db.t2.micro"
+        # RDS is slow in provisioning wait for it.
+        wait                : true
+        wait_timeout        : 600
+        command             : "create"
+        username            : "abcdefg"
+        password            : "abcdefg123"
+  roles: 
+    - ansible-aws-rds
