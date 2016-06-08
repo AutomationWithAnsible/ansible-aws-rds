@@ -10,6 +10,8 @@
 # [ eu-central-1": Frankfurt, "eu-west-1": "Ireland", "us-west-2": "Oregon", "us-east-1":N. Virigina, "ap-southeast-1": Singapour]
 
 aws_rds_region                  : "{{ aws_region | default('eu-west-1') }}"
+aws_rds_wait                    : 900
+aws_rds_async_retries           : 100
 
 aws_rds                         :
         instance_name           :  "{{ inventory_hostname.split('0')[0]}}"

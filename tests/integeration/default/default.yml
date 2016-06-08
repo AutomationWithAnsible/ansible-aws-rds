@@ -22,5 +22,18 @@
         command             : "create"
         username            : "abcdefg"
         password            : "abcdefg123"
+
+      - 
+        publicly_accessible : False
+        db_engine           : "postgres"
+        source_instance     : "testremoveme"
+        instance_name       : "testremovemeslave"
+        instance_type       : "db.t2.micro"
+        # RDS is slow in provisioning wait for it.
+        wait                : true
+        wait_timeout        : 600
+        command             : "replicate"
+
+
   roles: 
     - ansible-aws-rds

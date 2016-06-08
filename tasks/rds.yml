@@ -1,17 +1,15 @@
 ---
 
-- debug: var=item.db_engine
-  with_items: aws_rds
 ## For more info check http://docs.ansible.com/ansible/rds_module.html
 - name: rds | Provision a set of instances
   rds:
      vpc_security_groups: "{{ item.security_group_id | default(omit) }}"
      instance_type: "{{ item.instance_type }}"
-     db_engine: "{{ item.db_engine }}"
+     db_engine: "{{ item.db_engine | default(aws_rds_region) }}"
      region: "{{ item.region | default(aws_rds_region) }}"
      multi_zone: "{{ item.multi_zone | default(omit) }}"
      wait: "{{ item.wait | default(omit) }}"
-     wait_timeout: "{{ item.wait_timeout | default(omit) }}"
+     wait_timeout: "{{ item.wait_timeout | default(aws_rds_wait) }}"
      tags: "{{ item.instance_tags | default(omit) }}"
      publicly_accessible: "{{ item.publicly_accessible | default(omit) }}"
      db_name: "{{ item.db_name | default(omit) }}"
@@ -32,40 +30,14 @@
      port: "{{ item.port | default(omit) }}"
      iops: "{{ item.iops | default(omit) }}"
      character_set_name: "{{ item.character_set_name | default(omit) }}"
-  register: rds_server_others
+  register: rds_server
+  async: "{{ aws_rds_wait }}"
+  poll: 0
   with_items: aws_rds
 
-
-# # Ugly hack. We MUST ONLY provide the options listed below when using 'replicate' command:
-
-# - name: rds | Provision a set of instances
-#   rds:
-#      instance_type: "{{ item.instance_type }}"
-#      # Even when the Ansible description [1] for the 'db_engine' option states:
-#      #   "The type of database. Used only when command=create."
-#      # The ansible-playbook fails with following error when *not* providing the 'db_engine' option:
-#      #   TypeError: argument of type 'NoneType' is not iterable
-#      # [1] http://docs.ansible.com/ansible/rds_module.html#options
-#      db_engine: "{{ item.db_engine }}"
-#      region: "{{ item.region }}"
-#      wait: "{{ item.wait | default(omit) }}"
-#      wait_timeout: "{{ item.wait_timeout | default(omit) }}"
-#      tags: "{{ item.instance_tags | default(omit) }}"
-#      publicly_accessible: "{{ item.publicly_accessible | default(omit) }}"
-#      zone: "{{ item.zone | default(omit) }}"
-#      command: "{{ item.command | default('create') }}"
-#      instance_name: "{{ item.instance_name | default(omit) }}"
-#      new_instance_name: "{{ item.new_instance_name | default(omit) }}"
-#      aws_rds_access_key: "{{ item.access_key | default(omit) }}"
-#      aws_rds_secret_key: "{{ item.secret_key | default(omit) }}"
-#      source_instance: "{{ item.source_instance | default(omit) }}"
-#      port: "{{ item.port | default(omit) }}"
-#      character_set_name: "{{ item.character_set_name | default(omit) }}"
-#   register: rds_server
-#   when: aws_rds_command == 'replicate'
-
-# - name: Set fact if command is not replicate
-#   set_fact:
-#      #  Overwrite rds_server variable with actual run result for later usage by other roles (e.g. aws-route53).
-#      rds_server={{rds_server_others}}
-#   when: aws_rds_command != 'replicate'
+- name: async array
+  async_status: jid={{ item.ansible_job_id }}
+  register: job_result
+  until: job_result.finished
+  with_items: rds_server.results
+  retries: "{{ aws_rds_async_retries }}"
