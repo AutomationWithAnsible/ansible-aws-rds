@@ -30,6 +30,8 @@
      port: "{{ aws_rds_port | default(omit) }}"
      iops: "{{ aws_rds_iops | default(omit) }}"
      character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
+  connection: local
+  delegate_to: localhost
   register: rds_server_others
   when: aws_rds_command != 'replicate'
 
@@ -59,6 +61,8 @@
      source_instance: "{{ aws_rds_source_instance | default(omit) }}"
      port: "{{ aws_rds_port | default(omit) }}"
      character_set_name: "{{ aws_rds_character_set_name | default(omit) }}"
+  connection: local
+  delegate_to: localhost
   register: rds_server
   when: aws_rds_command == 'replicate'
 
