@@ -43,3 +43,8 @@
   until: job_result.finished
   with_items: "{{ rds_server.results }}"
   retries: "{{ aws_rds_async_retries }}"
+
+- name: rds | Set result fact
+  set_fact:
+     #  Overwrite rds_server variable with actual run result for later usage by other roles (e.g. aws-route53).
+     rds_server={{ job_result.results[0] }}
