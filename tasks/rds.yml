@@ -5,7 +5,7 @@
   rds:
      vpc_security_groups: "{{ item.security_group_id | default(omit) }}"
      instance_type: "{{ item.instance_type }}"
-     db_engine: "{{ item.db_engine | default(aws_rds_region) }}"
+     db_engine: "{{ item.db_engine | default(omit) }}"
      region: "{{ item.region | default(aws_rds_region) }}"
      multi_zone: "{{ item.multi_zone | default(omit) }}"
      wait: "{{ item.wait | default(omit) }}"
