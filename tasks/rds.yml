@@ -35,11 +35,11 @@
   register: rds_server
   async: "{{ aws_rds_wait }}"
   poll: 0
-  with_items: aws_rds
+  with_items: "{{ aws_rds }}"
 
-- name: async array
+- name: rds | async array
   async_status: jid={{ item.ansible_job_id }}
   register: job_result
   until: job_result.finished
-  with_items: rds_server.results
+  with_items: "{{ rds_server.results }}"
   retries: "{{ aws_rds_async_retries }}"
