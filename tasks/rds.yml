@@ -30,6 +30,8 @@
      port: "{{ item.port | default(omit) }}"
      iops: "{{ item.iops | default(omit) }}"
      character_set_name: "{{ item.character_set_name | default(omit) }}"
+  connection: local
+  delegate_to: localhost
   register: rds_server
   async: "{{ aws_rds_wait }}"
   poll: 0
