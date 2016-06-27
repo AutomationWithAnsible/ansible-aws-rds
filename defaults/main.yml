@@ -4,40 +4,23 @@
 #aws_ec2access_key        : "blaaablaaa"
 
 ## AWS secret key. If not set then the value of the
-## AWS_SECRET_ACCESS_KEY, AWS_SECRET_KEY, or EC2_SECRET_KEY  environment variable is used.
+## AWS_SECRET_ACCESS_KEY, AWS_SECRET_KEY, or EC2_SECRET_KEY environment variable is used.
 #aws_ec2_secret_key        : "moreblabla"
 
 # [ eu-central-1": Frankfurt, "eu-west-1": "Ireland", "us-west-2": "Oregon", "us-east-1":N. Virigina, "ap-southeast-1": Singapour]
+
 aws_rds_region                  : "{{ aws_region | default('eu-west-1') }}"
+aws_rds_wait                    : 900
+aws_rds_async_retries           : 100
 
-aws_rds_instance_name           :  "{{ inventory_hostname.split('0')[0]}}"
-
-## Name to rename an instance to. Used only when command=modify
-#aws_rds_new_instance_name       : "{{ inventory_hostname }}_new"
-
-
-aws_rds_db_name                 : "{{ aws_rds_instance_name }}_db1"
-
-## The type of database.  ["MySQL", "postgres" ]
-aws_rds_db_engine               : "postgres"
-aws_rds_size                    : "5"
-aws_rds_username                : "rds_user_name"
-aws_rds_password                : "Ab2X923d24"
-
-## Version number of the database engine to use. Used only
-#aws_rds_engine_version          : "9.4.4"
-
-## The instance type of the database. 
-aws_rds_instance_type            : "db.t2.micro"
-
-
-aws_rds_wait                     : "true"
-
-
-aws_rds_command                  : "create"
-
-
-# High wait timeout because RDS takes it's time.
-aws_rds_wait_timeout             : 900
-
-#aws_rds_vpc_subnet
+aws_rds                         :
+      - instance_name           :  "{{ inventory_hostname.split('0')[0]}}"
+        db_name                 : "xxx_db1"
+        db_engine               : "postgres"
+        size                    : "5"
+        username                : "rds_user_name"
+        password                : "Ab2X923d24"
+        instance_type           : "db.t2.micro" 
+        wait                    : "true"
+        command                 : "create"
+        wait_timeout            : 900 

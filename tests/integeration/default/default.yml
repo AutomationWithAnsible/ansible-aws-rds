@@ -1,0 +1,32 @@
+---
+- name: default test
+  hosts: all
+  connection: local
+  gather_facts: False
+  vars:
+    aws_rds                 :
+      - security_group_id   : "sg-3a27b45f"
+        publicly_accessible : False
+        db_engine           : "postgres"
+        db_name             : "testdb"
+        instance_name       : "testremoveme"
+        engine_version      : "9.4.5"
+        size                : "20"
+        instance_type       : "db.t2.micro"
+        wait                : true
+        wait_timeout        : 600
+        command             : "create"
+        username            : "abcdefg"
+        password            : "abcdefg123"
+
+      - publicly_accessible : False
+        db_engine           : "postgres"
+        source_instance     : "testremoveme"
+        instance_name       : "testremovemeslave"
+        instance_type       : "db.t2.micro"
+        wait                : true
+        wait_timeout        : 600
+        command             : "replicate"
+
+  roles: 
+    - ansible-aws-rds
